@@ -23,29 +23,58 @@ namespace LifeGame
         //Game holder to be constructed
         private LifeGame game = null;
         //default colours
-        private static readonly Color dead_cell_colour = Color.FromArgb(255, 0, 0, 0);
-        private static readonly Color life_cell_colour = Color.White;
+        private readonly Color dead_cell_colour = Color.FromArgb(255, 0, 0, 0);
+        private readonly Color alive_cell_colour = Color.White;
         //cell and canvas sizes
-        private const int cell_size = 10;
-        public static int Grid_Size { get; private set; }
+        private int cell_size;
+        private int grid_size;
+        public int Grid_Size { get => grid_size; set => grid_size = value; }
+        public int Cell_size { get => cell_size; set => cell_size = value; }
 
-        public GameGui()
+        public GameGui(int cellSize, int X_dim, int Y_dim )
         {
             InitializeComponent();
-            LifeGame game = new LifeGame(80, 80);
+            game = new LifeGame(Y_dim, X_dim);
             Grid_Size = game.Y_Dim * game.X_Dim;
         }
 
         private void OnLoad_UI(object sender, EventArgs e)
         {
+            timer.Interval = game.TimeInterval;
+            for (int j = 0; j + Cell_size <= Grid_Size; j += Cell_size )
+                for(int i = 0; i + Cell_size <= Grid_Size; i += Cell_size)
+                {
+                    Button button = new Button();
+                    button.Size = new Size(Cell_size, Cell_size);
+                    button.Location = new Point(i, j);
+                    button.Click += new EventHandler(OnCellClick);
+                }
+        }
 
+        private void UpdateColours()
+        {
+            for(int lin_index = 0; lin_index < gridUI.Controls.Count; ++lin_index)
+            {
+                gridUI.Controls[lin_index].BackColor =
+                    game[lin_index / game.X_Dim, lin_index % game.X_Dim] == 1 ? alive_cell_colour : dead_cell_colour;
+            }
         }
 
         private void OnCellClick(object sender, EventArgs e)
         {
-
+            int buttonIndex = gridUI.Controls.IndexOf(sender as Control);
+            int y = buttonIndex / game.X_Dim;
+            int x = buttonIndex % game.X_Dim;
+            //updating game state
+            game[y, x] = game[y,x] == 0 ? 1 : 0;
+            ((Button)sender).BackColor = game[y, x] == 1 ? alive_cell_colour : dead_cell_colour;
         }
 
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            game.getNextState();
+            UpdateColours();
+        }
     }
 
 

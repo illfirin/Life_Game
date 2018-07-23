@@ -30,12 +30,39 @@ namespace LifeGame
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.gridUI = new System.Windows.Forms.GroupBox();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.SuspendLayout();
+            // 
+            // gridUI
+            // 
+            this.gridUI.Location = new System.Drawing.Point(142, 150);
+            this.gridUI.Name = "gridUI";
+            this.gridUI.Size = new System.Drawing.Size(495, 267);
+            this.gridUI.TabIndex = 0;
+            this.gridUI.TabStop = false;
+            this.gridUI.Text = "groupBox1";
+            // 
+            // timer
+            // 
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // GameGui
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.gridUI);
+            this.Name = "GameGui";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.GroupBox gridUI;
+        private System.Windows.Forms.Timer timer;
     }
 }
 

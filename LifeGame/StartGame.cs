@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LifeGame
@@ -17,18 +10,21 @@ namespace LifeGame
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
-            
+            this.Visible = false;
+            GameGui gui = new GameGui()
         }
 
-        public enum CellSizes
+
+
+        /*public enum CellSizes
         {
             1,
             2,
             5,
             10;
-        }
+        }*/
 
 
     }

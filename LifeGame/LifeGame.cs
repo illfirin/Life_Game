@@ -34,12 +34,14 @@ namespace LifeGame
     public class LifeGame : ILife
     {
         protected int[,] second;
-        public static int generation = 0;
+        private static int generation = 0;
         public int[,] First { get; set; }
         public int Y_Dim { get; private set; }
         public int X_Dim { get; private set; }
+        public static int Generation { get => generation; private set => generation = value; }
+        public int TimeInterval { get; set; }
 
-        public int[,] this[int y, int x]
+        public int this[int y, int x]
         {
             get
             {
@@ -47,7 +49,7 @@ namespace LifeGame
                     throw new ArgumentOutOfRangeException("value must be in correct range");
                 else
                 {
-                    return First;
+                    return First[y,x];
                 }
             }
             set
@@ -56,7 +58,7 @@ namespace LifeGame
                     throw new ArgumentOutOfRangeException("value must be in correct range");
                 else
                 {
-                    First[y, x] = value[y,x];
+                    First[y, x] = value;
                 }
             }
         }
@@ -70,6 +72,8 @@ namespace LifeGame
             //random resettlement
             GenerateWorld(First);
         }
+        //TODO: refactor it later
+        public LifeGame(int time_interval) : this(int Xbound, int Ybound) => TimeInterval = time_interval;
 
         protected bool IsOutOfBounds(int y_value, int x_value)
         {
@@ -92,7 +96,7 @@ namespace LifeGame
 
         public void ClearWorld()
         {
-            generation = 0;
+            Generation = 0;
             //create arrays filled with zeroes
             int[,] fst = new int[First.GetUpperBound(0) + 1, First.Length / (second.GetUpperBound(0) + 1)];
             int[,] scnd = new int[second.GetUpperBound(0) + 1, First.Length / (second.GetUpperBound(0) + 1)];
@@ -100,6 +104,10 @@ namespace LifeGame
             First = fst;
             second = scnd;
         }
+
+        public void getNextState() =>
+            MoveNext(First, second);
+      
 
         public static void MoveNext(int[,] origin, int[,] destination)
         {
@@ -114,16 +122,16 @@ namespace LifeGame
             }
             else
             {
-                generation++;
-                for (int i = 0; i < origin_coll; i++)
+                for (int i = 0; i < origin_coll; ++i)
                 {
-                    for (int j = 0; j < origin_rows; i++)
+                    for (int j = 0; j < origin_rows; ++j)
                     {
                         destination[i, j] = LifeHelper.IsAlive(origin, i, j) ? 1 : 0;
                     }
                 }
             }
-
+            ++Generation;
+            origin = destination;
         }
 
         private int[,] GetClonnedArray(int [,] origin, int Y_bound, int X_bound)
