@@ -1,6 +1,7 @@
-﻿namespace LifeGame
+﻿
+namespace LifeGame
 {
-    partial class Form1
+    partial class GameGui
     {
         /// <summary>
         /// Обязательная переменная конструктора.
