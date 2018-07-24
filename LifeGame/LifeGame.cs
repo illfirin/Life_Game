@@ -62,18 +62,23 @@ namespace LifeGame
                 }
             }
         }
-
-        public LifeGame(int Xbound, int Ybound)
+        //master constructor
+        public LifeGame(int Xbound, int Ybound, int TimeInterval)
         {
             Y_Dim = Ybound;
             X_Dim = Xbound;
             First = new int[Ybound, Xbound];
             second = GetClonnedArray(First, Ybound, Xbound);
+            TimeInterval = this.TimeInterval;
             //random resettlement
             GenerateWorld(First);
         }
+
+        public LifeGame(int bound) : this(bound, bound, 100) { }
+
+
         //TODO: refactor it later
-        public LifeGame(int time_interval) : this(int Xbound, int Ybound) => TimeInterval = time_interval;
+        public LifeGame(int Xcord, int Y_cord) : this(Xcord, Y_cord, 100) { }
 
         protected bool IsOutOfBounds(int y_value, int x_value)
         {
@@ -105,7 +110,7 @@ namespace LifeGame
             second = scnd;
         }
 
-        public void getNextState() =>
+        public void GetNextState() =>
             MoveNext(First, second);
       
 
