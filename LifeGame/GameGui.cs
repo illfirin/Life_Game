@@ -33,6 +33,7 @@ namespace LifeGame
 
         public Color Alive_cell_colour => _alive_cell_colour;
         public Color Dead_cell_colour => _dead_cell_colour;
+        public int defaultInterval { get; } = 50;
 
         public GameGui(int cellSize, int X_dim, int Y_dim, int time)
         {
@@ -40,12 +41,12 @@ namespace LifeGame
             Cell_size = cellSize;
             Grid_Size = game.Y_Dim * game.X_Dim;
             InitializeComponent();
-
+           // timer.Interval = game.TimeInterval > 0 ? game.TimeInterval : defaultInterval;
         }
 
         private void OnLoad_UI(object sender, EventArgs e)
         {
-            timer.Interval = game.TimeInterval;
+            
             for (int j = 0; j + Cell_size <= Grid_Size; j += Cell_size)
                 for (int i = 0; i + Cell_size <= Grid_Size; i += Cell_size)
                 {
@@ -55,6 +56,7 @@ namespace LifeGame
                         Location = new Point(i, j)
                     };
                     button.Click += new EventHandler(OnCellClick);
+                    gridUI.Controls.Add(button);
                 }
         }
 
@@ -80,6 +82,31 @@ namespace LifeGame
         private void timer_Tick(object sender, EventArgs e)
         {
             game.GetNextState();
+            generation_text.Text = LifeGame.Generation.ToString();
+            UpdateColours();
+        }
+
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = true;
+            StartButton.Enabled = false;
+            StartButton.Enabled = true;
+        }
+
+        private void StopButton_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = false;
+            StopButton.Enabled = false;
+            StartButton.Enabled = true;
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = false;
+            StopButton.Enabled = false;
+            StartButton.Enabled = true;
+
+            game.ClearWorld();
             UpdateColours();
         }
     }

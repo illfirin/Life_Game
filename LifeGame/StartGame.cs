@@ -22,14 +22,15 @@ namespace LifeGame
             
             if (CellBox.SelectedItem != null && GridBox.SelectedItem != null && TimeBox.SelectedItem != null)
             {
-                GameGui gui = new GameGui((int)CellBox.SelectedItem, (int)GridBox.SelectedItem, (int)GridBox.SelectedItem, (int)TimeBox.SelectedItem);
-                this.Close();
+
+                // GameGui gui = new GameGui((int)CellBox.SelectedItem, (int)GridBox.SelectedItem, (int)GridBox.SelectedItem, (int)TimeBox.SelectedItem);
+                GameGui gui = new GameGui(10, 300, 300, 100);
                 gui.Show();
                 
             } 
             else
             {
-                throw new ArgumentNullException("Значения должны быть присвоены");
+                MessageBox.Show("Значения должны быть присвоены");
             }
 
         }
